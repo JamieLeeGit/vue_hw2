@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-      img {
-  object-fit: contain;
-  max-width: 100%;
-}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue HW2</title>
+  <style>
+    img {
+      object-fit: contain;
+      max-width: 100%;
+    }
 
-.primary-image {
-  height: 300px;
-}
+    .primary-image {
+      height: 300px;
+    }
 
-.images {
-  height: 150px;
-}
-    </style>
+    .images {
+      height: 150px;
+    }
+  </style>
 </head>
+
 <body>
   <div id="app">
     <div class="container">
@@ -45,50 +46,56 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item) in products" :key="item.id"> 
+              <tr v-for="item in products" :key="item.id">
                 <td width="150">{{ item.title }}</td>
-                <td width="120">{{ item.origin_price }}</td>
-                <td width="120">{{ item.price }}</td>
+                <td width="120">
+                  {{ item.origin_price }}
+                </td>
+                <td width="120">
+                  {{ item.price }}
+                </td>
                 <td width="150">
-                  <span class="text-success" v-if="item.is_enabled">啟用</span>
+                  <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
                   <span v-else>未啟用</span>
                 </td>
                 <td width="120">
-                  <button type="button" @click="tempProduct = item" class="btn btn-primary">查看細節</button>
+                  <button type="button" class="btn btn-primary" @click="temp = item">查看細節</button>
                 </td>
               </tr>
             </tbody>
           </table>
-          <p>目前有 <span>{{ products?.length }}</span> 項產品</p>
+          <p>目前有 <span>{{ products.length }}</span> 項產品</p>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" :key="temp.id">
           <h2>單一產品細節</h2>
-          <template v-if="tempProduct.id">
+          <template v-if="temp.id">
             <div class="card mb-3">
-              <img :src="tempProduct.imageUrl" class="card-img-top primary-image" alt="主圖">
+              <img :src=temp.imageUrl class="card-img-top primary-image" alt="主圖">
               <div class="card-body">
                 <h5 class="card-title">
-                  {{ tempProduct.title }}
-                  <span class="badge bg-primary ms-2">{{  }}</span>
+                  {{ temp.title }}
+                  <span class="badge bg-primary ms-2">{{ temp.category }}</span>
                 </h5>
-                <p class="card-text">商品描述：{{ tempProduct.description }}</p>
-                <p class="card-text">商品內容：{{ tempProduct.content }}</p>
+                <p class="card-text">商品描述：{{ temp.description }}</p>
+                <p class="card-text">商品內容：{{ temp.content }}</p>
                 <div class="d-flex">
-                  <p class="card-text me-2">{{ tempProduct.price }}</p>
-                  <p class="card-text text-secondary"><del>{{ tempProduct.origin_price }}</del></p>
-                  元 / {{ tempProduct.unit }}
+                  <p class="card-text me-2">{{ temp.price }}</p>
+                  <p class="card-text text-secondary"><del>{{ temp.origin_price }}</del></p>元 / {{ temp.unit }}
                 </div>
               </div>
             </div>
-            <template v-if="tempProduct?.imageUrl?.length">
-              <img :src="img" alt="" class="images m-2" v-for="img in tempProduct.imageUrl" ::key="img">
+            <!-- 可選串聯 -->
+            <template v-if="temp?.imagesUrl?.length">
+              <img :src="img" alt="" class="images m-2" v-for="img in temp.imagesUrl" :key="img" />
             </template>
-          </template>
-          <p class="text-secondary">請選擇一個商品查看</p>
+          </template>          
+          <p v-else class="text-secondary">請選擇一個商品查看</p>
         </div>
       </div>
     </div>
   </div>
-    <script type="javascript" src="js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <script type="module" src="./js/index.js"></script>
 </body>
+
 </html>
